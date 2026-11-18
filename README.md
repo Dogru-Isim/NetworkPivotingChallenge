@@ -106,24 +106,14 @@ Log into the pivot host:
 docker exec -it compromised bash
 ```
 
-From there, open a reverse SOCKS proxy back to `attacker`:
-
-```bash
-ssh -R 9050 -N root@10.10.1.10   # password: toor
-```
+From there, open a reverse SOCKS proxy back to `attacker` using SSH.
 
 In a **second** terminal (or PowerShell window), log into `attacker` and
-scan through the proxy:
-
-```bash
-docker exec -it attacker bash
-```
-
-```bash
-proxychains4 nmap -sT -Pn 10.10.2.10
-```
+scan the port 80 on IP 10.10.2.10 through the proxy.
 
 If you see port 80 open, you've successfully pivoted.
+
+> The setup scripts provide some helpful commands if you run them with the `hint` parameter as described previously.
 
 ## Troubleshooting
 
@@ -137,5 +127,5 @@ If you see port 80 open, you've successfully pivoted.
   step above.
 - **Containers already exist / name conflicts** — run the teardown
   script first, then set up again.
-- **Networking seems off after a failed run** — teardown, then setup;
+- **Networking seems off after a failed run** — run the teardown script, then run setup again;
   the scripts are designed to be re-run safely.
