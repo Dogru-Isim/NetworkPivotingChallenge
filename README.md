@@ -94,26 +94,36 @@ system-wide settings.
 | `hint` | Prints a walkthrough of the commands you need, without building anything |
 
 Setup takes a minute or two while packages install inside the containers.
-
+ 
+Setup takes a minute or two while packages install inside the containers.
+ 
 ## Working the lab (same on every platform)
-
+ 
 Everything from here on happens inside `docker exec`, so the commands
 are identical whether your host is Linux, macOS, or Windows.
-
-Log into the pivot host:
-
+ 
+You have two containers to work with:
+ 
 ```bash
-docker exec -it compromised bash
+sudo docker exec -it compromised bash
 ```
-
-From there, open a reverse SOCKS proxy back to `attacker` using SSH.
-
-In a **second** terminal (or PowerShell window), log into `attacker` and
-scan the port 80 on IP 10.10.2.10 through the proxy.
-
-If you see port 80 open, you've successfully pivoted.
-
-> The setup scripts provide some helpful commands if you run them with the `hint` parameter as described previously.
+ 
+```bash
+sudo docker exec -it attacker bash
+```
+ 
+(Use a separate terminal/PowerShell window for each — you'll need both
+open at the same time.)
+ 
+**Your goal:** get `attacker` to successfully run `nmap` against port 80
+on `target` (`10.10.2.10`), even though `attacker` has no direct network
+route to `target`. Only `compromised` can reach both networks — it's
+your pivot point.
+ 
+- how do you establish a reverse SOCKS tunnel using SSH?
+- `root`'s password on these containers is `toor`, if you need it.
+If you get stuck, run `./setup_pivot_network.sh hint` (or the `.ps1`
+equivalent) for a nudge in the right direction.
 
 ## Troubleshooting
 
